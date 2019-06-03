@@ -1,33 +1,176 @@
-.App {
-  text-align: center;
+/* Containers */
+.mainContainer {
+  margin: 20px;
 }
 
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 40vmin;
-  pointer-events: none;
+.mainCanvasTesterPathContainer {
+  display: block;
+  height: 400px;
+  width: 1210px;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+.canvasContainer {
+  display: inline-block;
+  height: 400px;
+}
+
+.testerPathContainer {
+  display: inline-block;
+  vertical-align: top;
+  height: 400px;
+  margin-left: 10px;
+}
+
+.testContainer {
+  height: 100px;
+  width: 400px;
+}
+
+.pathContainer {
+  height: 300px;
+  width: 400px;
+}
+
+.infoContainer {
+  display: block;
+  width: 1200px;
+  height: 30px;
+}
+
+/* Add Data */
+.mainAddDataContainer {
+  display: block;
+  height: 300px;
+  width: 1200px;
+  margin-top: 10px;
+}
+
+.dataContainer {
+  display: block;
+  height: 300px;
+}
+
+.addPlaceContainer {
+  display: inline-block;
+  height: 300px;
+  width: 300px;
+  padding-left: 10px;
+  vertical-align: top;
+  box-sizing: border-box;
+}
+
+.addEdgeContainer {
+  display: inline-block;
+  height: 300px;
+  width: 500px;
+  vertical-align: top;
+}
+
+.stepsContainer {
+  display: inline-block;
+  height: 300px;
+  width: 400px;
+  padding-left: 10px;
+  border: 2px solid black;
+  box-sizing: border-box;
+}
+
+/* Inputs */
+input {
+  display: inline;
+  margin-right: 5px;
+  padding: 4px;
+}
+
+.startRouteInput {
+  display: 'input';
+  margin-top: 10px;
+  padding: 8px;
+}
+
+.endRouteInput {
+  display: 'input';
+  margin-top: 10px;
+  padding: 8px;
+}
+
+.addNodeInput {
+  display: block;
+  padding: 8px;
+}
+
+.addEdgeInput {
+  display: inline;
+  padding: 8px;
+}
+
+/* Buttons */
+button {
+  margin-top: 5px;
+  margin-right: 5px;
+  padding: 10px;
+  border: 1px solid black;
+  border-radius: 3px;
   color: white;
+  background-color: green;
+  box-shadow: 2px 2px #d4d4d4;
+  cursor: pointer;
 }
 
-.App-link {
-  color: #61dafb;
+.testButton {
+  background-color: red;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+/* Tables */
+
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+
+td {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+  background-color: white;
+}
+
+tr:nth-child(odd) {
+  background-color: #dddddd;
+}
+
+/* D3 */
+
+.links line {
+  stroke: rgb(179, 179, 179);
+  stroke-opacity: 0.5;
+  cursor: pointer;
+}
+
+.nodes circle {
+  stroke: rgb(150, 150, 150);
+  stroke-width: 1.5px;
+  cursor: pointer;
+}
+
+.ntexts text {
+  color: black;
+  font-size: 14px;
+  font-weight: 400;
+  cursor: pointer;
+}
+
+.ltexts text {
+  color: red;
+  font-size: 10px;
+  font-weight: 400;
+  cursor: pointer;
 }
