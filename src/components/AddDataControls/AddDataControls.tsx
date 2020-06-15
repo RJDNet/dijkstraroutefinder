@@ -22,31 +22,31 @@ const AddDataControls: React.FC<IAddDataControls> = (props): JSX.Element => {
   }, [showNodes, showEdges]);
 
   // Input Change
-  const nodeInputChange = (e: ChangeEvent<HTMLInputElement>): void => {
+  function nodeInputChange(e: ChangeEvent<HTMLInputElement>): void {
     setNode(e.target.value.toUpperCase());
   }
 
-  const edge1InputChange = (e: ChangeEvent<HTMLInputElement>): void => {
+  function edge1InputChange(e: ChangeEvent<HTMLInputElement>): void {
     setEdge1(e.target.value.toUpperCase());
   }
 
-  const edge2InputChange = (e: ChangeEvent<HTMLInputElement>): void => {
+  function edge2InputChange(e: ChangeEvent<HTMLInputElement>): void {
     setEdge2(e.target.value.toUpperCase());
   }
 
-  const distanceInputChange = (e: ChangeEvent<HTMLInputElement>): void => {
+  function distanceInputChange(e: ChangeEvent<HTMLInputElement>): void {
     setDistance(parseInt(e.target.value));
   }
 
   // Add/Remove Data Buttons
-  const addNodeData = (): void => {
+  function addNodeData(): void {
     if (node) {
       addNode(node);
       setNode('');
     }
   }
 
-  const addEdgeData = (): void => {
+  function addEdgeData(): void {
     if (edge1 && edge2 && distance) {
       if (showNodes.includes(edge1 && edge2)) {
         addEdge(edge1, edge2, distance);
@@ -58,7 +58,7 @@ const AddDataControls: React.FC<IAddDataControls> = (props): JSX.Element => {
   }
 
   // From/To & Distance Function
-  const showAllEdges = (): any[][][] => {
+  function showAllEdges(): any[][][] {
     let edges: any[][][] = [];
 
     for (let prop in showEdges) {

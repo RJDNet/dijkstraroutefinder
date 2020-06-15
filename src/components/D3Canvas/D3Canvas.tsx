@@ -16,24 +16,24 @@ const D3Canvas: React.FC<ID3CanvasProps> = (props): JSX.Element => {
 
   useEffect(() => {
     // Check link array contains nodes
-    const checker = () => {
+    function checker() {
       if (showNodes.length === 0) return true;
       let nodeChecker: string[] = [];
       let linkChecker: string[] = [];
       let bool = false;
 
-      showNodes.forEach(place => {
+      showNodes.forEach((place: string) => {
         nodeChecker.push(place);
         nodeChecker.reverse();
       });
 
       for (let prop in showEdges) {
-        showEdges[prop].forEach((vals) => {
+        showEdges[prop].forEach((vals: { node: string }) => {
           linkChecker.push(vals.node);
         });
       }
 
-      nodeChecker.forEach(vals => {
+      nodeChecker.forEach((vals: string) => {
         const check = linkChecker.includes(vals);
         if (check) {
           bool = true;

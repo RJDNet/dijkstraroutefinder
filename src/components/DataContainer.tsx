@@ -16,12 +16,12 @@ const DataContainer: React.FC = (): JSX.Element => {
   useEffect(() => {
   }, [nodes, adjacencyList]);
 
-  const addNode = (node: string): void => {
+  function addNode(node: string): void {
     setNodes(prev => [...prev, node]);
     setAdjacencyList(prev => ({ ...prev, [node]: [] }));
   }
 
-  const addEdge = (node1: string, node2: string, distance: number): void => {
+  function addEdge(node1: string, node2: string, distance: number): void {
     const addNode2 = { node: node2, distance: distance };
     const addNode1 = { node: node1, distance: distance };
 
@@ -29,12 +29,12 @@ const DataContainer: React.FC = (): JSX.Element => {
     setAdjacencyList(prev => ({ ...prev, [node2]: [...prev[node2], addNode1] }));
   }
 
-  const removeNodes = (): void => {
+  function removeNodes(): void {
     setNodes(nodesArray);
     setAdjacencyList(adjacencyListObject);
   }
 
-  const findPath = (startNode: string, endNode: string): { path: string[]; times: number; } => {
+  function findPath(startNode: string, endNode: string): { path: string[]; times: number; } {
     if (!nodes.includes(startNode) || !nodes.includes(endNode)) return { path: [''], times: 0 };
 
     let times: Record<string, number> = {};

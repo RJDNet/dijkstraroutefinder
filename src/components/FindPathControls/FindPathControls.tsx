@@ -15,15 +15,15 @@ const FindPathControls: React.FC<IFindPathControlsProps> = (props): JSX.Element 
   useEffect(() => {
   }, [showNodes]);
 
-  const startInputChange = (e: ChangeEvent<HTMLInputElement>): void => {
+  function startInputChange(e: ChangeEvent<HTMLInputElement>): void {
     setStart(e.target.value.toUpperCase());
   }
 
-  const endInputChange = (e: ChangeEvent<HTMLInputElement>): void => {
+  function endInputChange(e: ChangeEvent<HTMLInputElement>): void {
     setEnd(e.target.value.toUpperCase());
   }
 
-  const handleSubmit = (): void => {
+  function handleSubmit(): void {
     const { path, times } = findPath(start, end)
 
     setRoute(path);

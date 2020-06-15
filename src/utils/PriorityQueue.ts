@@ -32,5 +32,4 @@ export default class PriorityQueue {
   isEmpty(): Boolean {
     return (this.collection.length === 0);
   }
-
 }

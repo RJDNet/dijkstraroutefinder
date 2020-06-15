@@ -9,7 +9,7 @@ interface ITestDataControls {
 const TestDataControls: React.FC<ITestDataControls> = (props): JSX.Element => {
   const { addNode, addEdge, removeNodes } = props;
 
-  const addTestNodes = (): void => {
+  function addTestNodes(): void {
     removeNodes();
     addNode('A');
     addNode('B');
@@ -21,7 +21,7 @@ const TestDataControls: React.FC<ITestDataControls> = (props): JSX.Element => {
     addNode('H');
   }
 
-  const addTestEdges = (): void => {
+  function addTestEdges(): void {
     removeNodes();
     addTestNodes();
     addEdge('A', 'C', 2);
@@ -36,7 +36,7 @@ const TestDataControls: React.FC<ITestDataControls> = (props): JSX.Element => {
     addEdge('E', 'H', 10);
   }
 
-  const removesTestNodes = (): void => {
+  function removesTestNodes(): void {
     removeNodes();
   }
 
