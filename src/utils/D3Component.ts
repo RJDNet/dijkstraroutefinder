@@ -70,7 +70,11 @@ class D3Component {
       showEdges[prop].forEach((vals) => {
         this.linkCheck.push(vals.node);
 
-        this.linkers.push({ source: prop, target: vals.node, distance: vals.distance });
+        this.linkers.push({
+          source: prop,
+          target: vals.node,
+          distance: vals.distance
+        });
       });
     }
 
@@ -79,6 +83,7 @@ class D3Component {
 
       this.nodeCheck.forEach(vals => {
         const check = this.linkCheck.includes(vals);
+
         if (!check) {
           bool = false;
         }
@@ -102,7 +107,7 @@ class D3Component {
         .force('charge_force', d3.forceManyBody().strength(-600))
         .force('collide_force', d3.forceCollide())
         .force('center_force', d3.forceCenter(width / 2, height / 2))
-        .force('link_force', d3.forceLink(this.linkers).id((d: any) => { return d.place; }))
+        .force('link_force', d3.forceLink(this.linkers).id((d: any) => d.place))
         .on('tick', this.tickActions);
 
       // Create Links
@@ -131,11 +136,9 @@ class D3Component {
         .data(this.noders)
         .enter()
         .append('text')
-        .text((d: { place: string }) => { return d.place });
+        .text((d: { place: string }) => d.place);
     }
   }
-
-
 
   // Drag Functions
   dragStarted = (d: IDrag): void => {
@@ -159,8 +162,8 @@ class D3Component {
   tickActions = (): void => {
     if (this.node) {
       this.node
-        .attr('cx', function (d: { x: number }): number { return d.x; })
-        .attr('cy', function (d: { y: number }) { return d.y; })
+        .attr('cx', (d: { x: number }) => d.x)
+        .attr('cy', (d: { y: number }) => d.y)
         .call(d3.drag()
           .on('start', <T>(d: T) => this.dragStarted(d))
           .on('drag', <T>(d: T) => this.dragged(d))
@@ -169,23 +172,22 @@ class D3Component {
 
     if (this.link) {
       this.link
-        .attr('x1', function (d: { source: { x: number } }) { return d.source.x; })
-        .attr('y1', function (d: { source: { y: number } }) { return d.source.y; })
-        .attr('x2', function (d: { target: { x: number } }) { return d.target.x; })
-        .attr('y2', function (d: { target: { y: number } }) { return d.target.y; });
+        .attr('x1', (d: { source: { x: number } }) => d.source.x)
+        .attr('y1', (d: { source: { y: number } }) => d.source.y)
+        .attr('x2', (d: { target: { x: number } }) => d.target.x)
+        .attr('y2', (d: { target: { y: number } }) => d.target.y);
     }
 
     if (this.ntext) {
       this.ntext
-        .attr('x', function (d: { x: number }) { return d.x - 25; })
-        .attr('y', function (d: { y: number }) { return d.y - 15; })
+        .attr('x', (d: { x: number }) => d.x - 25)
+        .attr('y', (d: { y: number }) => d.y - 15)
         .call(d3.drag()
           .on('start', <T>(d: T) => this.dragStarted(d))
           .on('drag', <T>(d: T) => this.dragged(d))
           .on('end', <T>(d: T) => this.dragEnded(d)));
     }
   }
-
 }
 
 export default D3Component;
