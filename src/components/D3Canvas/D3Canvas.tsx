@@ -6,9 +6,7 @@ interface ID3CanvasProps {
   showEdges: { [key: string]: any[] };
 }
 
-let vis;
-
-const D3Canvas: React.FC<ID3CanvasProps> = props => {
+const D3Canvas: React.FC<ID3CanvasProps> = (props): JSX.Element => {
   const [width] = useState(800);
   const [height] = useState(400);
 
@@ -52,7 +50,7 @@ const D3Canvas: React.FC<ID3CanvasProps> = props => {
         elem.parentNode.removeChild(elem);
       }
 
-      vis = new D3Component(refElement.current, { showNodes, showEdges, width, height });
+      new D3Component(refElement.current, { showNodes, showEdges, width, height });
     }
   }, [showNodes, showEdges, width, height]);
 

@@ -1,12 +1,12 @@
 import React from 'react';
 
 interface ITestDataControls {
-  addNode: Function;
-  addEdge: Function;
-  removeNodes: Function;
+  addNode: (startNode: string,) => void;
+  addEdge: (startNode: string, endNode: string, distance: number) => void;
+  removeNodes: () => void;
 }
 
-const TestDataControls: React.FC<ITestDataControls> = props => {
+const TestDataControls: React.FC<ITestDataControls> = (props): JSX.Element => {
   const { addNode, addEdge, removeNodes } = props;
 
   const addTestNodes = (): void => {

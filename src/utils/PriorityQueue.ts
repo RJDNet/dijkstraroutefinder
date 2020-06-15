@@ -1,4 +1,4 @@
-export default class PriorityQueue<T> {
+export default class PriorityQueue {
   private collection: Array<Array<string | number>>;
 
   constructor() {
@@ -10,6 +10,7 @@ export default class PriorityQueue<T> {
       this.collection.push(element);
     } else {
       let added = false;
+
       for (let i = 1; i <= this.collection.length; i++) {
         if (element[1] < this.collection[i - 1][1]) {
           this.collection.splice(i - 1, 0, element);

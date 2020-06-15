@@ -7,7 +7,7 @@ interface IAddDataControls {
   showEdges: { [key: string]: any[] };
 }
 
-const AddDataControls: React.FC<IAddDataControls> = props => {
+const AddDataControls: React.FC<IAddDataControls> = (props): JSX.Element => {
   const { addNode, addEdge, showNodes, showEdges } = props;
 
   // Add Node Input State
@@ -58,16 +58,16 @@ const AddDataControls: React.FC<IAddDataControls> = props => {
   }
 
   // From/To & Distance Function
-  const showAllEdges = (): [[], [], []] => {
-    let noders: any = [];
+  const showAllEdges = (): any[][][] => {
+    let edges: any[][][] = [];
 
     for (let prop in showEdges) {
       showEdges[prop].forEach((vals) => {
-        noders.push([[prop], [vals.node], [vals.distance]])
+        edges.push([[prop], [vals.node], [vals.distance]])
       });
     }
 
-    return noders;
+    return edges;
   }
 
   return (
@@ -142,11 +142,11 @@ const AddDataControls: React.FC<IAddDataControls> = props => {
             </thead>
             <tbody>
               {
-                showAllEdges().map((mapped: [], i: any, ) => {
+                showAllEdges().map((mapped: [][][], i: any,) => {
                   return (
                     <tr key={i}>
                       {
-                        mapped.map((edgeMap: [], edgei) => {
+                        mapped.map((edgeMap: [][][], edgei) => {
                           return <td key={edgei} style={{ fontSize: '13px', fontWeight: 400 }}>{edgeMap}</td>;
                         })
                       }

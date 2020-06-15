@@ -3,20 +3,27 @@ import * as d3 from 'd3';
 interface ID3ComponentProps {
   showNodes: string[];
   showEdges: { [key: string]: any[] };
-  width: number
-  height: number
+  width: number;
+  height: number;
 }
 
 interface INodeDatum {
-  place: string
-  x?: number
-  y?: number
+  place: string;
+  x?: number;
+  y?: number;
 }
 
 interface ILinkDatum {
-  source: string
-  target: string
-  distance: number
+  source: string;
+  target: string;
+  distance: number;
+}
+
+interface IDrag {
+  x?: number;
+  y?: number;
+  fx?: number | null;
+  fy?: number | null;
 }
 
 interface ID3Selection extends d3.Selection<any, any, SVGElement | HTMLElement, {}> { }
@@ -128,34 +135,40 @@ class D3Component {
     }
   }
 
+
+
   // Drag Functions
-  dragstarted = (d: { x?: number, y?: number, fx?: number, fy?: number }) => {
+  dragStarted = (d: IDrag): void => {
     if (!d3.event.active) this.simulation.alphaTarget(.03).restart();
     d.fx = d.x;
     d.fy = d.y;
   }
 
-  dragged = (d: { x?: number, y?: number, fx?: number, fy?: number }) => {
+  dragged = (d: IDrag): void => {
     d.fx = d3.event.x;
     d.fy = d3.event.y;
   }
 
-  dragended = (d: { fx?: null, fy?: null }) => {
+  dragEnded = (d: IDrag): void => {
     if (!d3.event.active) this.simulation.alphaTarget(.03).stop();
     d.fx = null;
     d.fy = null;
   }
 
+  // vectorSet = (): number => {
+
+  // }
+
   // Tick Actions
-  tickActions = () => {
+  tickActions = (): void => {
     if (this.node) {
       this.node
-        .attr('cx', function (d: { x: number }) { return d.x; })
+        .attr('cx', function (d: { x: number }): number { return d.x; })
         .attr('cy', function (d: { y: number }) { return d.y; })
         .call(d3.drag()
-          .on('start', this.dragstarted)
-          .on('drag', this.dragged)
-          .on('end', this.dragended));
+          .on('start', <T>(d: T) => this.dragStarted(d))
+          .on('drag', <T>(d: T) => this.dragged(d))
+          .on('end', <T>(d: T) => this.dragEnded(d)));
     }
 
     if (this.link) {
@@ -171,9 +184,9 @@ class D3Component {
         .attr('x', function (d: { x: number }) { return d.x - 25; })
         .attr('y', function (d: { y: number }) { return d.y - 15; })
         .call(d3.drag()
-          .on('start', this.dragstarted)
-          .on('drag', this.dragged)
-          .on('end', this.dragended));
+          .on('start', <T>(d: T) => this.dragStarted(d))
+          .on('drag', <T>(d: T) => this.dragged(d))
+          .on('end', <T>(d: T) => this.dragEnded(d)));
     }
   }
 

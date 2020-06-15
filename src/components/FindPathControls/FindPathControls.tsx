@@ -5,7 +5,7 @@ interface IFindPathControlsProps {
   findPath: Function;
 }
 
-const FindPathControls: React.FC<IFindPathControlsProps> = props => {
+const FindPathControls: React.FC<IFindPathControlsProps> = (props): JSX.Element => {
   const { showNodes, findPath } = props;
   const [start, setStart] = useState('');
   const [end, setEnd] = useState('');
@@ -24,11 +24,10 @@ const FindPathControls: React.FC<IFindPathControlsProps> = props => {
   }
 
   const handleSubmit = (): void => {
-    if (showNodes.includes(start && end)) {
-      const { path, times } = findPath(start, end)
-      setRoute(path);
-      setDistance(times);
-    }
+    const { path, times } = findPath(start, end)
+
+    setRoute(path);
+    setDistance(times);
   }
 
   return (

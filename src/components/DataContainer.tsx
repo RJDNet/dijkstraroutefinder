@@ -6,7 +6,7 @@ import AddDataControls from '../components/AddDataControls/AddDataControls';
 import FindPathControls from '../components/FindPathControls/FindPathControls';
 import D3Canvas from '../components/D3Canvas/D3Canvas';
 
-const DataContainer: React.FC = () => {
+const DataContainer: React.FC = (): JSX.Element => {
   const nodesArray: string[] = [];
   const adjacencyListObject: { [key: string]: any[] } = {};
 
@@ -35,6 +35,8 @@ const DataContainer: React.FC = () => {
   }
 
   const findPath = (startNode: string, endNode: string): { path: string[]; times: number; } => {
+    if (!nodes.includes(startNode) || !nodes.includes(endNode)) return { path: [''], times: 0 };
+
     let times: Record<string, number> = {};
     let backtrace: Record<string, any> = {};
     let pq = new PriorityQueue();
@@ -53,12 +55,14 @@ const DataContainer: React.FC = () => {
       let shortestStep: (string | number)[] | undefined = pq.dequeue();
       if (shortestStep) {
         let currentNode: string | number = shortestStep[0];
+
         adjacencyList[currentNode].forEach((neighbor: { node: string, distance: number }) => {
-          let time = times[currentNode] + neighbor.distance;
+          let time: number = times[currentNode] + neighbor.distance;
 
           if (time < times[neighbor.node]) {
             times[neighbor.node] = time;
             backtrace[neighbor.node] = currentNode;
+
             pq.enqueue([neighbor.node, time]);
           }
         });
