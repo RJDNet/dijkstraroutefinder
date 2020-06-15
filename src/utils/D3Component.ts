@@ -155,10 +155,6 @@ class D3Component {
     d.fy = null;
   }
 
-  // vectorSet = (): number => {
-
-  // }
-
   // Tick Actions
   tickActions = (): void => {
     if (this.node) {
