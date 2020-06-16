@@ -12,6 +12,7 @@ const DataContainer: React.FC = (): JSX.Element => {
 
   const [nodes, setNodes] = useState(nodesArray);
   const [adjacencyList, setAdjacencyList] = useState(adjacencyListObject);
+  const [findPathResult, setFindPathResult] = useState<string[]>();
 
   useEffect(() => {
   }, [nodes, adjacencyList]);
@@ -77,6 +78,8 @@ const DataContainer: React.FC = (): JSX.Element => {
       lastStep = backtrace[lastStep]
     }
 
+    setFindPathResult(path);
+
     return {
       path,
       times: times[endNode]
@@ -87,7 +90,7 @@ const DataContainer: React.FC = (): JSX.Element => {
     <div className='mainContainer'>
       <div className='mainCanvasTesterPathContainer'>
         <div className='canvasContainer'>
-          <D3Canvas showNodes={nodes} showEdges={adjacencyList} />
+          <D3Canvas showNodes={nodes} showEdges={adjacencyList} findPathResult={findPathResult} />
         </div>
         <div className='testerPathContainer'>
           <TestDataControls addNode={addNode} addEdge={addEdge} removeNodes={removeNodes} />

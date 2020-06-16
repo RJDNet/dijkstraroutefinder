@@ -142,7 +142,7 @@ const AddDataControls: React.FC<IAddDataControls> = (props): JSX.Element => {
             </thead>
             <tbody>
               {
-                showAllEdges().map((mapped: [][][], i: any,) => {
+                showAllEdges().map((mapped: [][][], i: number) => {
                   return (
                     <tr key={i}>
                       {

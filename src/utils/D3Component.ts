@@ -3,6 +3,7 @@ import * as d3 from 'd3';
 interface ID3ComponentProps {
   showNodes: string[];
   showEdges: { [key: string]: any[] };
+  findPathResult: string[] | undefined;
   width: number;
   height: number;
 }
@@ -14,8 +15,8 @@ interface INodeDatum {
 }
 
 interface ILinkDatum {
-  source: string;
-  target: string;
+  source: any;
+  target: INodeDatum;
   distance: number;
 }
 
@@ -50,7 +51,7 @@ class D3Component {
   linkCheck: string[];
 
   constructor(containerEl: string | null, props: ID3ComponentProps) {
-    const { showNodes, showEdges, width, height } = props;
+    const { showNodes, showEdges, findPathResult, width, height } = props;
     this.simulation = d3.forceSimulation();
     this.noders = [];
     this.linkers = [];
@@ -70,11 +71,13 @@ class D3Component {
       showEdges[prop].forEach((vals) => {
         this.linkCheck.push(vals.node);
 
-        this.linkers.push({
+        const link: ILinkDatum = {
           source: prop,
           target: vals.node,
           distance: vals.distance
-        });
+        }
+
+        this.linkers.push(link);
       });
     }
 
@@ -117,7 +120,35 @@ class D3Component {
         .data(this.linkers)
         .enter()
         .append('line')
-        .attr('stroke-width', 2);
+        .attr('stroke-width', 6)
+        .style('stroke', (node: ILinkDatum) => {
+          let sourceIndex: number;
+          let source: string = '';
+          let target: string = '';
+
+          // To prevent colouring of nodes that are linked
+          // but are not part of the shortest path
+          if (findPathResult !== undefined) {
+            findPathResult.forEach((e: string, i) => {
+              if (e === node.source.place) {
+                sourceIndex = i;
+                source = e;
+              }
+
+              if (i === sourceIndex + 1) {
+                if (e === node.target.place) {
+                  target = e;
+                }
+              }
+            })
+          }
+
+          if (node.source.place === source && node.target.place === target) {
+            return 'red';
+          }
+
+          return 'lightgray';
+        });
 
       // Create Nodes
       this.node = this.svg.append('svg')
@@ -127,7 +158,17 @@ class D3Component {
         .enter()
         .append('circle')
         .attr('r', 10)
-        .attr('fill', 'red')
+        .attr('fill', (node: INodeDatum) => {
+          if (findPathResult !== undefined) {
+            if (findPathResult.includes(node.place)) {
+              return 'red'
+            };
+
+            return 'black';
+          }
+
+          return 'black';
+        });
 
       // Create Places Text
       this.ntext = this.svg.append('svg')

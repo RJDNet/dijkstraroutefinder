@@ -2,14 +2,15 @@ import React, { useState, useEffect, ChangeEvent } from 'react';
 
 interface IFindPathControlsProps {
   showNodes: string[];
-  findPath: Function;
+  findPath: (start: string, end: string) => { path: string[]; times: number; };
 }
 
 const FindPathControls: React.FC<IFindPathControlsProps> = (props): JSX.Element => {
   const { showNodes, findPath } = props;
+
   const [start, setStart] = useState('');
   const [end, setEnd] = useState('');
-  const [route, setRoute] = useState();
+  const [route, setRoute] = useState<string[]>();
   const [distance, setDistance] = useState(0);
 
   useEffect(() => {
@@ -23,8 +24,8 @@ const FindPathControls: React.FC<IFindPathControlsProps> = (props): JSX.Element 
     setEnd(e.target.value.toUpperCase());
   }
 
-  function handleSubmit(): void {
-    const { path, times } = findPath(start, end)
+  function showPath(): void {
+    const { path, times } = findPath(start, end);
 
     setRoute(path);
     setDistance(times);
@@ -48,7 +49,7 @@ const FindPathControls: React.FC<IFindPathControlsProps> = (props): JSX.Element 
       <h4 className='from' data-testid='from'>From: {start}</h4>
       <h4 className='end' data-testid='end'>To: {end}</h4>
       <h4 className='shortestRoute' data-testid='shortestRoute'>Shortest Route: {route} with a distance of {distance}</h4>
-      <button className='routeButton' onClick={handleSubmit}>Find Shortest Route</button>
+      <button className='routeButton' onClick={showPath}>Find Shortest Route</button>
     </div>
   );
 }

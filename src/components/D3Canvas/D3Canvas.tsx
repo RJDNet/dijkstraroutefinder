@@ -4,15 +4,16 @@ import D3Component from '../../utils/D3Component';
 interface ID3CanvasProps {
   showNodes: string[];
   showEdges: { [key: string]: any[] };
+  findPathResult: string[] | undefined;
 }
 
 const D3Canvas: React.FC<ID3CanvasProps> = (props): JSX.Element => {
+  const { showNodes, showEdges, findPathResult } = props;
+
   const [width] = useState(800);
   const [height] = useState(400);
 
   const refElement = useRef(null);
-
-  const { showNodes, showEdges } = props;
 
   useEffect(() => {
     // Check link array contains nodes
@@ -50,9 +51,9 @@ const D3Canvas: React.FC<ID3CanvasProps> = (props): JSX.Element => {
         elem.parentNode.removeChild(elem);
       }
 
-      new D3Component(refElement.current, { showNodes, showEdges, width, height });
+      new D3Component(refElement.current, { showNodes, showEdges, findPathResult, width, height });
     }
-  }, [showNodes, showEdges, width, height]);
+  }, [showNodes, showEdges, findPathResult, width, height]);
 
   return (
     <svg height={height} width={width} ref={refElement} style={{ border: '1px solid lightgray', boxSizing: 'border-box' }} />
