@@ -1,22 +1,23 @@
 import React, { useState, useEffect, ChangeEvent } from 'react';
+import { IAdjacencyListObject } from '../DataContainer';
 
 interface IAddDataControls {
-  addNode: Function;
-  addEdge: Function;
+  addNode: (node: string) => void;
+  addEdge: (node1: string, node2: string, distance: number) => void;
   showNodes: string[];
-  showEdges: { [key: string]: any[] };
+  showEdges: IAdjacencyListObject;
 }
 
 const AddDataControls: React.FC<IAddDataControls> = (props): JSX.Element => {
   const { addNode, addEdge, showNodes, showEdges } = props;
 
   // Add Node Input State
-  const [node, setNode] = useState('');
+  const [node, setNode] = useState<string>();
 
   // Add Edge Input State
-  const [edge1, setEdge1] = useState('');
-  const [edge2, setEdge2] = useState('');
-  const [distance, setDistance] = useState(0);
+  const [edge1, setEdge1] = useState<string>();
+  const [edge2, setEdge2] = useState<string>();
+  const [distance, setDistance] = useState<number>();
 
   useEffect(() => {
   }, [showNodes, showEdges]);
@@ -58,8 +59,8 @@ const AddDataControls: React.FC<IAddDataControls> = (props): JSX.Element => {
   }
 
   // From/To & Distance Function
-  function showAllEdges(): any[][][] {
-    let edges: any[][][] = [];
+  function showAllEdges(): (string | number)[][][] {
+    let edges: (string | number)[][][] = [[], [], []];
 
     for (let prop in showEdges) {
       showEdges[prop].forEach((vals) => {
@@ -142,11 +143,11 @@ const AddDataControls: React.FC<IAddDataControls> = (props): JSX.Element => {
             </thead>
             <tbody>
               {
-                showAllEdges().map((mapped: [][][], i: number) => {
+                showAllEdges().map((mapped: (string | number)[][], i: number) => {
                   return (
                     <tr key={i}>
                       {
-                        mapped.map((edgeMap: [][][], edgei) => {
+                        mapped.map((edgeMap: (string | number)[], edgei) => {
                           return <td key={edgei} style={{ fontSize: '13px', fontWeight: 400 }}>{edgeMap}</td>;
                         })
                       }

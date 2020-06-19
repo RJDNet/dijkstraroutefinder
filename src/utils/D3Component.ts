@@ -52,6 +52,7 @@ class D3Component {
 
   constructor(containerEl: string | null, props: ID3ComponentProps) {
     const { showNodes, showEdges, findPathResult, width, height } = props;
+
     this.simulation = d3.forceSimulation();
     this.noders = [];
     this.linkers = [];
@@ -129,7 +130,7 @@ class D3Component {
           // To prevent colouring of nodes that are linked
           // but are not part of the shortest path
           if (findPathResult !== undefined) {
-            findPathResult.forEach((e: string, i) => {
+            findPathResult.forEach((e: string, i: number) => {
               if (e === node.source.place) {
                 sourceIndex = i;
                 source = e;

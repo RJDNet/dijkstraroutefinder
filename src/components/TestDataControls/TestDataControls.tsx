@@ -4,10 +4,11 @@ interface ITestDataControls {
   addNode: (startNode: string,) => void;
   addEdge: (startNode: string, endNode: string, distance: number) => void;
   removeNodes: () => void;
+  resetPath: () => void;
 }
 
-const TestDataControls: React.FC<ITestDataControls> = (props): JSX.Element => {
-  const { addNode, addEdge, removeNodes } = props;
+const TestDataControls: React.FC<ITestDataControls> = React.memo((props): JSX.Element => {
+  const { addNode, addEdge, removeNodes, resetPath } = props;
 
   function addTestNodes(): void {
     removeNodes();
@@ -37,6 +38,7 @@ const TestDataControls: React.FC<ITestDataControls> = (props): JSX.Element => {
   }
 
   function removesTestNodes(): void {
+    resetPath();
     removeNodes();
   }
 
@@ -48,6 +50,6 @@ const TestDataControls: React.FC<ITestDataControls> = (props): JSX.Element => {
       <button className='testButton' onClick={removesTestNodes}>Remove All Data</button>
     </div>
   );
-}
+});
 
 export default TestDataControls;

@@ -1,8 +1,9 @@
 import React, { useState, useEffect, ChangeEvent } from 'react';
+import { IFindPath } from '../DataContainer';
 
 interface IFindPathControlsProps {
   showNodes: string[];
-  findPath: (start: string, end: string) => { path: string[]; times: number; };
+  findPath: (start: string, end: string) => IFindPath;
 }
 
 const FindPathControls: React.FC<IFindPathControlsProps> = (props): JSX.Element => {

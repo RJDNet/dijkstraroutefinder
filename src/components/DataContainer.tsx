@@ -6,9 +6,23 @@ import AddDataControls from '../components/AddDataControls/AddDataControls';
 import FindPathControls from '../components/FindPathControls/FindPathControls';
 import D3Canvas from '../components/D3Canvas/D3Canvas';
 
+export interface INode {
+  node: string;
+  distance: number;
+};
+
+export interface IAdjacencyListObject {
+  [key: string]: INode[];
+}
+
+export interface IFindPath {
+  path: string[];
+  times: number;
+}
+
 const DataContainer: React.FC = (): JSX.Element => {
   const nodesArray: string[] = [];
-  const adjacencyListObject: { [key: string]: any[] } = {};
+  const adjacencyListObject: IAdjacencyListObject = {};
 
   const [nodes, setNodes] = useState(nodesArray);
   const [adjacencyList, setAdjacencyList] = useState(adjacencyListObject);
@@ -35,11 +49,14 @@ const DataContainer: React.FC = (): JSX.Element => {
     setAdjacencyList(adjacencyListObject);
   }
 
-  function findPath(startNode: string, endNode: string): { path: string[]; times: number; } {
-    if (!nodes.includes(startNode) || !nodes.includes(endNode)) return { path: [''], times: 0 };
+  function findPath(startNode: string, endNode: string): IFindPath {
+    if (!nodes.includes(startNode) || !nodes.includes(endNode)) {
+      setFindPathResult([]);
+      return { path: [''], times: 0 };
+    }
 
     let times: Record<string, number> = {};
-    let backtrace: Record<string, any> = {};
+    let backtrace: Record<string | number, string> = {};
     let pq = new PriorityQueue();
 
     times[startNode] = 0;
@@ -54,10 +71,11 @@ const DataContainer: React.FC = (): JSX.Element => {
 
     while (!pq.isEmpty()) {
       let shortestStep: (string | number)[] | undefined = pq.dequeue();
-      if (shortestStep) {
-        let currentNode: string | number = shortestStep[0];
 
-        adjacencyList[currentNode].forEach((neighbor: { node: string, distance: number }) => {
+      if (shortestStep) {
+        let currentNode: string = shortestStep[0].toString();
+
+        adjacencyList[currentNode].forEach((neighbor: INode) => {
           let time: number = times[currentNode] + neighbor.distance;
 
           if (time < times[neighbor.node]) {
@@ -86,6 +104,10 @@ const DataContainer: React.FC = (): JSX.Element => {
     };
   }
 
+  function resetPath(): void {
+    setFindPathResult([]);
+  }
+
   return (
     <div className='mainContainer'>
       <div className='mainCanvasTesterPathContainer'>
@@ -93,7 +115,7 @@ const DataContainer: React.FC = (): JSX.Element => {
           <D3Canvas showNodes={nodes} showEdges={adjacencyList} findPathResult={findPathResult} />
         </div>
         <div className='testerPathContainer'>
-          <TestDataControls addNode={addNode} addEdge={addEdge} removeNodes={removeNodes} />
+          <TestDataControls addNode={addNode} addEdge={addEdge} removeNodes={removeNodes} resetPath={resetPath} />
           <FindPathControls showNodes={nodes} findPath={findPath} />
         </div>
       </div>
