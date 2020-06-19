@@ -12,12 +12,12 @@ const AddDataControls: React.FC<IAddDataControls> = (props): JSX.Element => {
   const { addNode, addEdge, showNodes, showEdges } = props;
 
   // Add Node Input State
-  const [node, setNode] = useState<string>();
+  const [node, setNode] = useState('');
 
   // Add Edge Input State
-  const [edge1, setEdge1] = useState<string>();
-  const [edge2, setEdge2] = useState<string>();
-  const [distance, setDistance] = useState<number>();
+  const [edge1, setEdge1] = useState('');
+  const [edge2, setEdge2] = useState('');
+  const [distance, setDistance] = useState(0);
 
   useEffect(() => {
   }, [showNodes, showEdges]);

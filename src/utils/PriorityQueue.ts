@@ -1,5 +1,5 @@
 export default class PriorityQueue {
-  private collection: Array<Array<string | number>>;
+  private collection: (string | number)[][];
 
   constructor() {
     this.collection = [];
@@ -29,7 +29,7 @@ export default class PriorityQueue {
     return value;
   }
 
-  isEmpty(): Boolean {
-    return (this.collection.length === 0);
+  isEmpty(): boolean {
+    return this.collection.length === 0;
   }
 }

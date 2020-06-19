@@ -33,22 +33,20 @@ interface ID3Simulation extends d3.Simulation<INodeDatum, ILinkDatum> { }
 
 class D3Component {
   // Canvas
-  svg?: ID3Selection;
+  private svg?: ID3Selection;
   // D3 Simulation
-  simulation: ID3Simulation;
+  private simulation: ID3Simulation;
   // Elements
-  node?: ID3Selection;
-  link?: ID3Selection;
+  private node?: ID3Selection;
+  private link?: ID3Selection;
   // Labels
-  ntext?: ID3Selection;
-  ltext?: ID3Selection;
-  infoText?: ID3Selection
+  private ntext?: ID3Selection;
   // Data Structures
-  noders: INodeDatum[];
-  linkers: ILinkDatum[];
+  private noders: INodeDatum[];
+  private linkers: ILinkDatum[];
   // Checks for Rendering
-  nodeCheck: string[];
-  linkCheck: string[];
+  private nodeCheck: string[];
+  private linkCheck: string[];
 
   constructor(containerEl: string | null, props: ID3ComponentProps) {
     const { showNodes, showEdges, findPathResult, width, height } = props;
@@ -76,7 +74,7 @@ class D3Component {
           source: prop,
           target: vals.node,
           distance: vals.distance
-        }
+        };
 
         this.linkers.push(link);
       });
@@ -141,7 +139,7 @@ class D3Component {
                   target = e;
                 }
               }
-            })
+            });
           }
 
           if (node.source.place === source && node.target.place === target) {
@@ -183,25 +181,25 @@ class D3Component {
   }
 
   // Drag Functions
-  dragStarted = (d: IDrag): void => {
+  private dragStarted = (d: IDrag): void => {
     if (!d3.event.active) this.simulation.alphaTarget(.03).restart();
     d.fx = d.x;
     d.fy = d.y;
   }
 
-  dragged = (d: IDrag): void => {
+  private dragged = (d: IDrag): void => {
     d.fx = d3.event.x;
     d.fy = d3.event.y;
   }
 
-  dragEnded = (d: IDrag): void => {
+  private dragEnded = (d: IDrag): void => {
     if (!d3.event.active) this.simulation.alphaTarget(.03).stop();
     d.fx = null;
     d.fy = null;
   }
 
   // Tick Actions
-  tickActions = (): void => {
+  private tickActions = (): void => {
     if (this.node) {
       this.node
         .attr('cx', (d: { x: number }) => d.x)

@@ -9,7 +9,7 @@ import D3Canvas from '../components/D3Canvas/D3Canvas';
 export interface INode {
   node: string;
   distance: number;
-};
+}
 
 export interface IAdjacencyListObject {
   [key: string]: INode[];
@@ -37,11 +37,14 @@ const DataContainer: React.FC = (): JSX.Element => {
   }
 
   function addEdge(node1: string, node2: string, distance: number): void {
-    const addNode2 = { node: node2, distance: distance };
     const addNode1 = { node: node1, distance: distance };
+    const addNode2 = { node: node2, distance: distance };
 
-    setAdjacencyList(prev => ({ ...prev, [node1]: [...prev[node1], addNode2] }));
-    setAdjacencyList(prev => ({ ...prev, [node2]: [...prev[node2], addNode1] }));
+    setAdjacencyList(prev => ({
+      ...prev,
+      [node1]: [...prev[node1], addNode2],
+      [node2]: [...prev[node2], addNode1]
+    }));
   }
 
   function removeNodes(): void {
