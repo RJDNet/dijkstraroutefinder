@@ -79,7 +79,7 @@ const AddDataControls: React.FC<IAddDataControls> = (props): JSX.Element => {
       <div className='stepsContainer'>
         <h2>INSTRUCTIONS</h2>
         <p>1. Use the "testers" buttons to add test data.</p>
-        <p>2. Type in Route start/end to find the shortest route + distance.</p>
+        <p>2. Type in Route start/end to find the shortest route + distance. H to B is a good example.</p>
         <p style={{ textAlign: 'center' }}>-OR-</p>
         <p>1. Add Place Nodes.</p>
         <p>2. Add links.</p>
