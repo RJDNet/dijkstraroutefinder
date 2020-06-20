@@ -75,7 +75,7 @@ class D3Component {
       showEdges[prop].forEach((vals) => {
         this.linkCheck.push(vals.place);
 
-        const link: { source: string, target: string, distance: number | undefined } = {
+        const link: ILinkDatum = {
           source: prop,
           target: vals.place,
           distance: vals.distance !== undefined ? vals.distance : undefined
