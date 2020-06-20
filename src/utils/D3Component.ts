@@ -1,35 +1,40 @@
 import * as d3 from 'd3';
+import { IAdjacencyListObject } from '../components/DataContainer';
 
-interface ID3ComponentProps {
+export interface ID3ComponentProps {
+  current: string | null;
   showNodes: string[];
-  showEdges: { [key: string]: any[] };
+  showEdges: IAdjacencyListObject;
   findPathResult: string[] | undefined;
   width: number;
   height: number;
 }
 
-interface INodeDatum {
+export interface INodeDatum {
   place: string;
+  distance?: number;
   x?: number;
   y?: number;
 }
 
-interface ILinkDatum {
-  source: any;
-  target: INodeDatum;
-  distance: number;
+export interface ILinkDatum {
+  source: INodeDatum | string;
+  target: INodeDatum | string;
+  distance: number | undefined;
 }
 
-interface IDrag {
+export interface IDrag {
   x?: number;
   y?: number;
   fx?: number | null;
   fy?: number | null;
 }
 
-interface ID3Selection extends d3.Selection<any, any, SVGElement | HTMLElement, {}> { }
+export interface ID3Selection extends d3.Selection<any, any, SVGElement | HTMLElement, {}> { }
 
-interface ID3Simulation extends d3.Simulation<INodeDatum, ILinkDatum> { }
+export interface ID3Simulation extends d3.Simulation<INodeDatum, ILinkDatum> { }
+
+type NodeDatum = INodeDatum;
 
 class D3Component {
   // Canvas
@@ -48,8 +53,8 @@ class D3Component {
   private nodeCheck: string[];
   private linkCheck: string[];
 
-  constructor(containerEl: string | null, props: ID3ComponentProps) {
-    const { showNodes, showEdges, findPathResult, width, height } = props;
+  constructor(props: ID3ComponentProps) {
+    const { current, showNodes, showEdges, findPathResult, width, height } = props;
 
     this.simulation = d3.forceSimulation();
     this.noders = [];
@@ -68,12 +73,12 @@ class D3Component {
     // Links
     for (let prop in showEdges) {
       showEdges[prop].forEach((vals) => {
-        this.linkCheck.push(vals.node);
+        this.linkCheck.push(vals.place);
 
-        const link: ILinkDatum = {
+        const link: { source: string, target: string, distance: number | undefined } = {
           source: prop,
-          target: vals.node,
-          distance: vals.distance
+          target: vals.place,
+          distance: vals.distance !== undefined ? vals.distance : undefined
         };
 
         this.linkers.push(link);
@@ -95,9 +100,9 @@ class D3Component {
     }
 
     // D3
-    if (containerEl && check()) {
+    if (current && check()) {
       // SVG Container
-      this.svg = d3.select(containerEl)
+      this.svg = d3.select(current)
         .append('svg')
         .attr('id', 'node')
         .attr('width', width)
@@ -120,7 +125,7 @@ class D3Component {
         .enter()
         .append('line')
         .attr('stroke-width', 6)
-        .style('stroke', (node: ILinkDatum) => {
+        .style('stroke', (node: any) => {
           let sourceIndex: number;
           let source: string = '';
           let target: string = '';
@@ -205,9 +210,9 @@ class D3Component {
         .attr('cx', (d: { x: number }) => d.x)
         .attr('cy', (d: { y: number }) => d.y)
         .call(d3.drag()
-          .on('start', <T>(d: T) => this.dragStarted(d))
-          .on('drag', <T>(d: T) => this.dragged(d))
-          .on('end', <T>(d: T) => this.dragEnded(d)));
+          .on('start', <IDrag>(d: IDrag) => this.dragStarted(d))
+          .on('drag', <IDrag>(d: IDrag) => this.dragged(d))
+          .on('end', <IDrag>(d: IDrag) => this.dragEnded(d)));
     }
 
     if (this.link) {
@@ -223,9 +228,9 @@ class D3Component {
         .attr('x', (d: { x: number }) => d.x - 25)
         .attr('y', (d: { y: number }) => d.y - 15)
         .call(d3.drag()
-          .on('start', <T>(d: T) => this.dragStarted(d))
-          .on('drag', <T>(d: T) => this.dragged(d))
-          .on('end', <T>(d: T) => this.dragEnded(d)));
+          .on('start', <IDrag>(d: IDrag) => this.dragStarted(d))
+          .on('drag', <IDrag>(d: IDrag) => this.dragged(d))
+          .on('end', <IDrag>(d: IDrag) => this.dragEnded(d)));
     }
   }
 }

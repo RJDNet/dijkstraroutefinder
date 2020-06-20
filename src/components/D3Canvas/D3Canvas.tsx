@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import D3Component from '../../utils/D3Component';
+import { IAdjacencyListObject } from '../DataContainer';
 
 interface ID3CanvasProps {
   showNodes: string[];
-  showEdges: { [key: string]: any[] };
+  showEdges: IAdjacencyListObject;
   findPathResult: string[] | undefined;
 }
 
@@ -19,6 +20,7 @@ const D3Canvas: React.FC<ID3CanvasProps> = (props): JSX.Element => {
     // Check link array contains nodes
     function checker() {
       if (showNodes.length === 0) return true;
+
       let nodeChecker: string[] = [];
       let linkChecker: string[] = [];
       let bool = false;
@@ -29,8 +31,8 @@ const D3Canvas: React.FC<ID3CanvasProps> = (props): JSX.Element => {
       });
 
       for (let prop in showEdges) {
-        showEdges[prop].forEach((vals: { node: string }) => {
-          linkChecker.push(vals.node);
+        showEdges[prop].forEach((vals: { place: string }) => {
+          linkChecker.push(vals.place);
         });
       }
 
@@ -51,7 +53,8 @@ const D3Canvas: React.FC<ID3CanvasProps> = (props): JSX.Element => {
         elem.parentNode.removeChild(elem);
       }
 
-      new D3Component(refElement.current, { showNodes, showEdges, findPathResult, width, height });
+      const current: string | null = refElement.current;
+      new D3Component({ current, showNodes, showEdges, findPathResult, width, height });
     }
   }, [showNodes, showEdges, findPathResult, width, height]);
 

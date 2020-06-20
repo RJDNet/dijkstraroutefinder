@@ -5,14 +5,10 @@ import TestDataControls from '../components/TestDataControls/TestDataControls';
 import AddDataControls from '../components/AddDataControls/AddDataControls';
 import FindPathControls from '../components/FindPathControls/FindPathControls';
 import D3Canvas from '../components/D3Canvas/D3Canvas';
-
-export interface INode {
-  node: string;
-  distance: number;
-}
+import { INodeDatum } from '../utils/D3Component';
 
 export interface IAdjacencyListObject {
-  [key: string]: INode[];
+  [key: string]: INodeDatum[];
 }
 
 export interface IFindPath {
@@ -37,8 +33,8 @@ const DataContainer: React.FC = (): JSX.Element => {
   }
 
   function addEdge(node1: string, node2: string, distance: number): void {
-    const addNode1 = { node: node1, distance: distance };
-    const addNode2 = { node: node2, distance: distance };
+    const addNode1: INodeDatum = { place: node1, distance: distance };
+    const addNode2: INodeDatum = { place: node2, distance: distance };
 
     setAdjacencyList(prev => ({
       ...prev,
@@ -78,14 +74,16 @@ const DataContainer: React.FC = (): JSX.Element => {
       if (shortestStep) {
         let currentNode: string = shortestStep[0].toString();
 
-        adjacencyList[currentNode].forEach((neighbor: INode) => {
-          let time: number = times[currentNode] + neighbor.distance;
+        adjacencyList[currentNode].forEach((neighbor: INodeDatum) => {
+          if (neighbor.distance !== undefined) {
+            const time: number = times[currentNode] + neighbor.distance;
 
-          if (time < times[neighbor.node]) {
-            times[neighbor.node] = time;
-            backtrace[neighbor.node] = currentNode;
+            if (time < times[neighbor.place]) {
+              times[neighbor.place] = time;
+              backtrace[neighbor.place] = currentNode;
 
-            pq.enqueue([neighbor.node, time]);
+              pq.enqueue([neighbor.place, time]);
+            }
           }
         });
       }

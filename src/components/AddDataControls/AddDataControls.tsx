@@ -64,7 +64,9 @@ const AddDataControls: React.FC<IAddDataControls> = (props): JSX.Element => {
 
     for (let prop in showEdges) {
       showEdges[prop].forEach((vals) => {
-        edges.push([[prop], [vals.node], [vals.distance]])
+        if (vals.distance !== undefined) {
+          edges.push([[prop], [vals.place], [vals.distance]])
+        }
       });
     }
 
