@@ -3,15 +3,23 @@ import React, {
   useEffect,
   ChangeEvent
 } from 'react';
-import { IFindPath } from '../DataContainer';
+import {
+  IAdjacencyListObject,
+  IFindPath
+} from '../DataContainer';
 
 interface IFindPathControlsProps {
   showNodes: string[];
+  showEdges: IAdjacencyListObject;
   findPath: (start: string, end: string) => IFindPath;
 }
 
 const FindPathControls: React.FC<IFindPathControlsProps> = (props): JSX.Element => {
-  const { showNodes, findPath } = props;
+  const {
+    showNodes,
+    showEdges,
+    findPath
+  } = props;
 
   const [start, setStart] = useState('');
   const [end, setEnd] = useState('');
@@ -19,7 +27,7 @@ const FindPathControls: React.FC<IFindPathControlsProps> = (props): JSX.Element 
   const [distance, setDistance] = useState(0);
 
   useEffect(() => {
-  }, [showNodes]);
+  }, [showNodes, showEdges]);
 
   function startInputChange(e: ChangeEvent<HTMLInputElement>): void {
     setStart(e.target.value.toUpperCase());

@@ -17,6 +17,9 @@ const canvasStyles: CSSProperties = {
   boxSizing: 'border-box'
 };
 
+const width: number = 800;
+const height: number = 400;
+
 const D3Canvas: React.FC<ID3CanvasProps> = (props): JSX.Element => {
   const {
     showNodes,
@@ -25,11 +28,6 @@ const D3Canvas: React.FC<ID3CanvasProps> = (props): JSX.Element => {
   } = props;
 
   const refElement = useRef(null);
-  const current: string | null = refElement.current;
-
-  const width: number = 800;
-  const height: number = 400;
-
   const d3Element = new D3Component();
 
   useEffect(() => {
@@ -40,9 +38,9 @@ const D3Canvas: React.FC<ID3CanvasProps> = (props): JSX.Element => {
         elem.parentNode.removeChild(elem);
       }
 
-      d3Element.init(current, showNodes, showEdges, findPathResult, width, height);
+      d3Element.init(refElement.current, showNodes, showEdges, findPathResult, width, height);
     }
-  }, [d3Element, current, showNodes, showEdges, findPathResult, width, height]);
+  }, [d3Element, showNodes, showEdges, findPathResult]);
 
   return (
     <svg
@@ -55,7 +53,7 @@ const D3Canvas: React.FC<ID3CanvasProps> = (props): JSX.Element => {
 }
 
 // Check link array contains nodes
-function checker(showNodes: string[], showEdges: IAdjacencyListObject): boolean {
+function checker(showNodes: string[], showEdges: IAdjacencyListObject) {
   if (showNodes.length === 0) return true;
 
   let nodeChecker: string[] = [];

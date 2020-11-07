@@ -7,8 +7,13 @@ interface ITestDataControls {
   resetPath: () => void;
 }
 
-const TestDataControls: React.FC<ITestDataControls> = React.memo((props): JSX.Element => {
-  const { addNode, addEdge, removeNodes, resetPath } = props;
+const TestDataControls: React.FC<ITestDataControls> = React.memo((props: ITestDataControls): JSX.Element => {
+  const {
+    addNode,
+    addEdge,
+    removeNodes,
+    resetPath
+  } = props;
 
   function addTestNodes(): void {
     removeNodes();

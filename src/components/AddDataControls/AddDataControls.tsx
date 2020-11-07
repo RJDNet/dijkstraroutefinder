@@ -12,8 +12,13 @@ interface IAddDataControls {
   showEdges: IAdjacencyListObject;
 }
 
-const AddDataControls: React.FC<IAddDataControls> = (props): JSX.Element => {
-  const { addNode, addEdge, showNodes, showEdges } = props;
+const AddDataControls: React.FC<IAddDataControls> = (props: IAddDataControls): JSX.Element => {
+  const {
+    addNode,
+    addEdge,
+    showNodes,
+    showEdges
+  } = props;
 
   // Add Node Input State
   const [node, setNode] = useState('');
@@ -60,21 +65,6 @@ const AddDataControls: React.FC<IAddDataControls> = (props): JSX.Element => {
         setDistance(0);
       }
     }
-  }
-
-  // From/To & Distance Function
-  function showAllEdges(): (string | number)[][][] {
-    let edges: (string | number)[][][] = [[], [], []];
-
-    for (let prop in showEdges) {
-      showEdges[prop].forEach((vals) => {
-        if (vals.distance !== undefined) {
-          edges.push([[prop], [vals.place], [vals.distance]])
-        }
-      });
-    }
-
-    return edges;
   }
 
   return (
@@ -149,7 +139,7 @@ const AddDataControls: React.FC<IAddDataControls> = (props): JSX.Element => {
             </thead>
             <tbody>
               {
-                showAllEdges().map((mapped: (string | number)[][], i: number) => {
+                showAllEdges(showEdges).map((mapped: (string | number)[][], i: number) => {
                   return (
                     <tr key={i}>
                       {
@@ -167,6 +157,21 @@ const AddDataControls: React.FC<IAddDataControls> = (props): JSX.Element => {
       </div>
     </div>
   );
+}
+
+// From/To & Distance Function
+function showAllEdges(showEdges: IAdjacencyListObject): (string | number)[][][] {
+  let edges: (string | number)[][][] = [[], [], []];
+
+  for (let prop in showEdges) {
+    showEdges[prop].forEach((vals) => {
+      if (vals.distance !== undefined) {
+        edges.push([[prop], [vals.place], [vals.distance]])
+      }
+    });
+  }
+
+  return edges;
 }
 
 export default AddDataControls;

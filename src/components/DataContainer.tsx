@@ -19,10 +19,11 @@ export interface IFindPath {
   times: number;
 }
 
-const DataContainer: React.FC = (): JSX.Element => {
-  const nodesArray: string[] = [];
-  const adjacencyListObject: IAdjacencyListObject = {};
+const pq = new PriorityQueue();
+const nodesArray: string[] = [];
+const adjacencyListObject: IAdjacencyListObject = {};
 
+const DataContainer: React.FC = (): JSX.Element => {
   const [nodes, setNodes] = useState(nodesArray);
   const [adjacencyList, setAdjacencyList] = useState(adjacencyListObject);
   const [findPathResult, setFindPathResult] = useState<string[]>();
@@ -59,7 +60,6 @@ const DataContainer: React.FC = (): JSX.Element => {
 
     let times: Record<string, number> = {};
     let backtrace: Record<string | number, string> = {};
-    let pq = new PriorityQueue();
 
     times[startNode] = 0;
 
@@ -116,17 +116,35 @@ const DataContainer: React.FC = (): JSX.Element => {
     <div className='mainContainer'>
       <div className='mainCanvasTesterPathContainer'>
         <div className='canvasContainer'>
-          <D3Canvas showNodes={nodes} showEdges={adjacencyList} findPathResult={findPathResult} />
+          <D3Canvas
+            showNodes={nodes}
+            showEdges={adjacencyList}
+            findPathResult={findPathResult}
+          />
         </div>
         <div className='testerPathContainer'>
-          <TestDataControls addNode={addNode} addEdge={addEdge} removeNodes={removeNodes} resetPath={resetPath} />
-          <FindPathControls showNodes={nodes} findPath={findPath} />
+          <TestDataControls
+            addNode={addNode}
+            addEdge={addEdge}
+            removeNodes={removeNodes}
+            resetPath={resetPath}
+          />
+          <FindPathControls
+            showNodes={nodes}
+            showEdges={adjacencyList}
+            findPath={findPath}
+          />
         </div>
       </div>
       <div className='infoContainer'>* all places require a link for visualisation.</div>
 
       <div className='mainAddDataContainer'>
-        <AddDataControls addNode={addNode} addEdge={addEdge} showNodes={nodes} showEdges={adjacencyList} />
+        <AddDataControls
+          addNode={addNode}
+          addEdge={addEdge}
+          showNodes={nodes}
+          showEdges={adjacencyList}
+        />
       </div>
     </div>
   );
