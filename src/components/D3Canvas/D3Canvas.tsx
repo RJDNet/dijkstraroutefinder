@@ -27,8 +27,8 @@ const D3Canvas: React.FC<ID3CanvasProps> = (props): JSX.Element => {
     findPathResult
   } = props;
 
-  const refElement = useRef(null);
   const d3Element = new D3Component();
+  const refElement = useRef(null);
 
   useEffect(() => {
     // Check, remove element if found and create new D3 component
