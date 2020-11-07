@@ -1,15 +1,6 @@
 import * as d3 from 'd3';
 import { IAdjacencyListObject } from '../components/DataContainer';
 
-export interface ID3ComponentProps {
-  current: string | null;
-  showNodes: string[];
-  showEdges: IAdjacencyListObject;
-  findPathResult: string[] | undefined;
-  width: number;
-  height: number;
-}
-
 export interface INodeDatum {
   place: string;
   distance?: number;
@@ -34,8 +25,6 @@ export interface ID3Selection extends d3.Selection<any, any, SVGElement | HTMLEl
 
 export interface ID3Simulation extends d3.Simulation<INodeDatum, ILinkDatum> { }
 
-type NodeDatum = INodeDatum;
-
 class D3Component {
   // Canvas
   private svg?: ID3Selection;
@@ -53,15 +42,21 @@ class D3Component {
   private nodeCheck: string[];
   private linkCheck: string[];
 
-  constructor(props: ID3ComponentProps) {
-    const { current, showNodes, showEdges, findPathResult, width, height } = props;
-
+  constructor() {
     this.simulation = d3.forceSimulation();
     this.noders = [];
     this.linkers = [];
     this.nodeCheck = [];
     this.linkCheck = [];
+  }
 
+  public init(
+    current: string | null,
+    showNodes: string[],
+    showEdges: IAdjacencyListObject,
+    findPathResult: string[] | undefined,
+    width: number,
+    height: number): void {
     // Nodes
     showNodes.forEach((place) => {
       this.nodeCheck.push(place);
