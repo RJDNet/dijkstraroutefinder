@@ -1,4 +1,8 @@
-import React, { useState, useEffect, ChangeEvent } from 'react';
+import React, {
+  useState,
+  useEffect,
+  ChangeEvent
+} from 'react';
 import { IAdjacencyListObject } from '../DataContainer';
 
 interface IAddDataControls {
