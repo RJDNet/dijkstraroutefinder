@@ -58,54 +58,76 @@ const DataContainer: React.FC = (): JSX.Element => {
       return { path: [''], times: 0 };
     }
 
-    let times: Record<string, number> = {};
-    let backtrace: Record<string | number, string> = {};
+    if (checkAdjacencyList(startNode, endNode, adjacencyList)) {
+      let times: Record<string, number> = {};
+      let backtrace: Record<string | number, string> = {};
 
-    times[startNode] = 0;
+      times[startNode] = 0;
 
-    nodes.forEach((node: string) => {
-      if (node !== startNode) {
-        times[node] = Infinity;
+      nodes.forEach((node: string) => {
+        if (node !== startNode) {
+          times[node] = Infinity;
+        }
+      });
+
+      pq.enqueue([startNode, 0]);
+
+      while (!pq.isEmpty()) {
+        let shortestStep: (string | number)[] | undefined = pq.dequeue();
+
+        if (shortestStep) {
+          let currentNode: string = shortestStep[0].toString();
+
+          adjacencyList[currentNode].forEach((neighbor: INodeDatum) => {
+            if (neighbor.distance !== undefined) {
+              const time: number = times[currentNode] + neighbor.distance;
+
+              if (time < times[neighbor.place]) {
+                times[neighbor.place] = time;
+                backtrace[neighbor.place] = currentNode;
+
+                pq.enqueue([neighbor.place, time]);
+              }
+            }
+          });
+        }
+      }
+
+      let path = [endNode];
+      let lastStep = endNode;
+
+      while (lastStep !== startNode) {
+        path.unshift(backtrace[lastStep])
+        lastStep = backtrace[lastStep]
+      }
+
+      setFindPathResult(path);
+
+      return {
+        path,
+        times: times[endNode]
+      };
+    }
+
+    return { path: [''], times: 0 };
+  }
+
+  function checkAdjacencyList(startNode: string, endNode: string, adjacencyList: IAdjacencyListObject): boolean {
+    const adj: [string, INodeDatum[]][] = Object.entries(adjacencyList);
+    let found: boolean = false;
+
+    adj.forEach(i => {
+      if ((i[0] === startNode && (i[1][0] !== undefined && i[1][0].distance !== undefined && i[1][0].distance > 0)) ||
+        (i[0] === endNode && (i[1][0] !== undefined && i[1][0].distance !== undefined && i[1][0].distance > 0))) {
+        found = true;
       }
     });
 
-    pq.enqueue([startNode, 0]);
-
-    while (!pq.isEmpty()) {
-      let shortestStep: (string | number)[] | undefined = pq.dequeue();
-
-      if (shortestStep) {
-        let currentNode: string = shortestStep[0].toString();
-
-        adjacencyList[currentNode].forEach((neighbor: INodeDatum) => {
-          if (neighbor.distance !== undefined) {
-            const time: number = times[currentNode] + neighbor.distance;
-
-            if (time < times[neighbor.place]) {
-              times[neighbor.place] = time;
-              backtrace[neighbor.place] = currentNode;
-
-              pq.enqueue([neighbor.place, time]);
-            }
-          }
-        });
-      }
+    if (!found) {
+      return false;
     }
 
-    let path = [endNode];
-    let lastStep = endNode;
-
-    while (lastStep !== startNode) {
-      path.unshift(backtrace[lastStep])
-      lastStep = backtrace[lastStep]
-    }
-
-    setFindPathResult(path);
-
-    return {
-      path,
-      times: times[endNode]
-    };
+    return true;
   }
 
   function resetPath(): void {
